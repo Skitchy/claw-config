@@ -1,0 +1,149 @@
+{
+  // Claw Ecosystem — OpenClaw Configuration
+  // For Skitch | Designed February 2026
+  //
+  // INSTRUCTIONS:
+  // 1. Copy this to ~/.openclaw/openclaw.json on VPS
+  // 2. Replace all ${...} placeholders with values from .env
+  // 3. Run: openclaw doctor --fix
+  // 4. Run: openclaw security audit --deep
+
+  "agents": {
+    "defaults": {
+      "model": {
+        // Opus as the brain — this is Claw's personality
+        "primary": "anthropic/claude-opus-4-6",
+        "fallbacks": [
+          "anthropic/claude-sonnet-4-5",
+          "openrouter/google/gemini-2.5-flash-lite"
+        ]
+      },
+
+      "models": {
+        "anthropic/claude-opus-4-6": {
+          "alias": "opus",
+          "maxTokens": 4096
+        },
+        "anthropic/claude-sonnet-4-5": {
+          "alias": "sonnet"
+        }
+      },
+
+      "workspace": "~/.openclaw/workspace",
+
+      "memorySearch": {
+        "sources": ["memory", "sessions"],
+        "provider": "openai",
+        "model": "text-embedding-3-small"
+      },
+
+      "contextPruning": {
+        "mode": "cache-ttl",
+        "ttl": "6h",
+        "keepLastAssistants": 3
+      },
+
+      "compaction": {
+        "mode": "default",
+        "memoryFlush": {
+          "enabled": true,
+          "softThresholdTokens": 40000,
+          "prompt": "Extract key decisions, state changes, lessons, and blockers to memory/YYYY-MM-DD.md. Format: ## [HH:MM] Topic. Skip routine exchanges. Write NO_FLUSH if nothing important happened.",
+          "systemPrompt": "Compacting session context. Extract only what is worth remembering. Focus on decisions, not chitchat."
+        }
+      },
+
+      // Heartbeat: use the cheapest model available
+      // Heartbeats are just "anything need attention?" checks
+      "heartbeat": {
+        "every": "30m",
+        "model": "openrouter/google/gemini-2.5-flash-lite"
+      },
+
+      "maxConcurrent": 4,
+      "subagents": {
+        // Sub-agents use Sonnet for mid-tier tasks
+        // They fetch data and return raw results to Opus
+        "model": "anthropic/claude-sonnet-4-5",
+        "maxConcurrent": 8
+      }
+    },
+
+    "list": [
+      {
+        "id": "claw",
+        "default": true,
+        "identity": {
+          "name": "Claw",
+          "emoji": "🦞"
+        },
+        "workspace": "~/.openclaw/workspace",
+        // Claw IS Opus — the personality, the decision-maker
+        "model": "anthropic/claude-opus-4-6"
+      }
+    ]
+  },
+
+  "bindings": [
+    {
+      "agentId": "claw",
+      "match": { "channel": "signal" }
+    }
+  ],
+
+  "logging": {
+    "redactSensitive": "tools"
+  },
+
+  "tools": {
+    "web": {
+      "search": {
+        "enabled": true,
+        "provider": "brave",
+        "apiKey": "${BRAVE_SEARCH_API_KEY}"
+      },
+      "fetch": {
+        "enabled": true
+      }
+    }
+  },
+
+  "channels": {
+    "signal": {
+      "enabled": true
+    }
+  },
+
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "${GATEWAY_TOKEN}",
+      "allowTailscale": true
+    }
+  },
+
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "anthropic": {
+        "apiKey": "${ANTHROPIC_API_KEY}"
+      }
+    }
+  },
+
+  "auth": {
+    "profiles": {
+      "anthropic:default": {
+        "provider": "anthropic",
+        "mode": "api_key"
+      },
+      "openrouter:default": {
+        "provider": "openrouter",
+        "mode": "api_key"
+      }
+    }
+  }
+}

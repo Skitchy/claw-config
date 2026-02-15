@@ -1,0 +1,22 @@
+# Secrets — NEVER commit
+.env
+*.key
+*.pem
+*.json
+!package.json
+!openclaw.json
+!.env.example
+
+# Credentials
+credentials/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
