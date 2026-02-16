@@ -98,6 +98,17 @@ sync_config() {
         fi
     done
 
+    # Sync skills bundled in claw-config (e.g. voiceclaw)
+    if [ -d "${repo_path}/skills" ]; then
+        for skill_dir in "${repo_path}/skills"/*/; do
+            if [ -d "$skill_dir" ]; then
+                local skill_name=$(basename "$skill_dir")
+                rsync -a --delete --exclude='.git' "${skill_dir}" "${SKILLS_DIR}/${skill_name}/"
+                log "Updated bundled skill: ${skill_name}"
+            fi
+        done
+    fi
+
     # NOTE: openclaw.json is NOT auto-synced from repo.
     # It contains ${...} placeholders that must be resolved with .env values.
     # Config changes require manual review and application.

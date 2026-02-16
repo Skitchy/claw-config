@@ -33,6 +33,7 @@ You have skills installed in your workspace at `skills/`. Read the SKILL.md in e
 ### Custom Skills (workspace)
 - **BlueClaw** (`skills/blueclaw/SKILL.md`) — Bluesky posting, replies, notifications via AT Protocol. Account: cryptoskitch.bsky.social. Credentials in `~/.openclaw/workspace/.env`.
 - **RedClaw** (`skills/redclaw/SKILL.md`) — Reddit read/post/comment via OAuth API. Account: /u/Crypto_Skitch. Token helper: `/root/.openclaw/tools/reddit-token.sh`.
+- **VoiceClaw** (`skills/voiceclaw/SKILL.md`) — Send voice messages on Signal via OpenAI TTS. Helper: `/root/.openclaw/tools/claw-tts.sh`. Use when Skitch asks you to speak or send audio.
 
 ### Bundled Skills (ready to use)
 - **GitHub** — `gh` CLI for issues, PRs, CI runs, API queries. Already authenticated as Skitchy.
