@@ -10,6 +10,9 @@
 # Credentials
 credentials/
 
+# Notes (local only)
+Notes/
+
 # OS files
 .DS_Store
 Thumbs.db
@@ -20,3 +23,6 @@ Thumbs.db
 *~
 .vscode/
 .idea/
+
+# Claude Code local settings
+.claude/
