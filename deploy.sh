@@ -91,7 +91,7 @@ sync_config() {
     git pull --quiet --ff-only origin main
 
     # Sync workspace files (SOUL.md, AGENTS.md, USER.md, HEARTBEAT.md)
-    for f in SOUL.md AGENTS.md USER.md HEARTBEAT.md; do
+    for f in SOUL.md AGENTS.md USER.md HEARTBEAT.md BOOT.md; do
         if [ -f "${repo_path}/${f}" ]; then
             cp "${repo_path}/${f}" "${WORKSPACE}/${f}"
             log "Updated workspace file: ${f}"
