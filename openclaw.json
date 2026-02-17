@@ -30,6 +30,9 @@
         },
         "openrouter/moonshotai/kimi-k2.5": {
           "alias": "kimi"
+        },
+        "openrouter/google/gemini-2.5-flash-lite": {
+          "alias": "gemini-flash"
         }
       },
 
