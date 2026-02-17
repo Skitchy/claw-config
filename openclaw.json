@@ -15,6 +15,7 @@
         "primary": "anthropic/claude-opus-4-6",
         "fallbacks": [
           "anthropic/claude-sonnet-4-5",
+          "openrouter/moonshotai/kimi-k2.5",
           "openrouter/google/gemini-2.5-flash-lite"
         ]
       },
@@ -26,8 +27,14 @@
         },
         "anthropic/claude-sonnet-4-5": {
           "alias": "sonnet"
+        },
+        "openrouter/moonshotai/kimi-k2.5": {
+          "alias": "kimi"
         }
       },
+
+      // Image analysis model — Sonnet handles vision well at lower cost
+      "imageModel": "anthropic/claude-sonnet-4-5",
 
       "workspace": "~/.openclaw/workspace",
 
@@ -62,9 +69,9 @@
 
       "maxConcurrent": 4,
       "subagents": {
-        // Sub-agents use Sonnet for mid-tier tasks
-        // They fetch data and return raw results to Opus
-        "model": "anthropic/claude-sonnet-4-5",
+        // Sub-agents use Kimi K2.5 for cost-efficient delegated tasks
+        // Testing Kimi as cheap hands — was Sonnet 4.5
+        "model": "openrouter/moonshotai/kimi-k2.5",
         "maxConcurrent": 8
       }
     },
@@ -105,6 +112,28 @@
       "fetch": {
         "enabled": true
       }
+    },
+    "browser": {
+      "enabled": true,
+      "defaultProfile": "openclaw",
+      "headless": true,
+      "noSandbox": true,
+      "executablePath": "/usr/bin/chromium-browser",
+      "profiles": {
+        "openclaw": { "cdpPort": 18800 }
+      }
+    },
+    // Cron: scheduled tasks (daily summaries, health checks, token monitoring)
+    "cron": {
+      "enabled": true
+    },
+    // Message: rich Signal interactions (reactions, edits, pins, threads)
+    "message": {
+      "enabled": true
+    },
+    // Image: analyze photos sent via Signal
+    "image": {
+      "enabled": true
     }
   },
 
