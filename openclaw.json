@@ -73,6 +73,14 @@
         "model": "openrouter/google/gemini-2.5-flash"
       },
 
+      // Sandbox: allow browser host control for XClaw (X bot detection needs real browser)
+      "sandbox": {
+        "mode": "non-main",
+        "browser": {
+          "allowHostControl": true
+        }
+      },
+
       "maxConcurrent": 4,
       "subagents": {
         // Sub-agents use Kimi K2.5 for cost-efficient delegated tasks
@@ -149,6 +157,16 @@
     }
   },
 
+  // Voice: Talk Mode via ElevenLabs TTS
+  // Skitch: browse ElevenLabs voice library and pick a voice ID
+  "talk": {
+    "voiceId": "${ELEVENLABS_VOICE_ID}",
+    "modelId": "eleven_v3",
+    "outputFormat": "mp3_44100_128",
+    "apiKey": "${ELEVENLABS_API_KEY}",
+    "interruptOnSpeech": true
+  },
+
   "gateway": {
     "port": 18789,
     "mode": "local",
@@ -157,6 +175,10 @@
       "mode": "token",
       "token": "${GATEWAY_TOKEN}",
       "allowTailscale": true
+    },
+    // Canvas: visual dashboard host
+    "canvasHost": {
+      "port": 18793
     }
   },
 
