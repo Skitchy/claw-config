@@ -128,8 +128,8 @@ Controversial topic, unfamiliar community, unclear whether Skitch would want to 
 
 ## Safety Rails
 
-- **Audit trail**: Log every post before it goes live
-- **Kill switch**: Check platform-specific kill switch config before posting. If disabled, do not post.
+- **Audit trail**: Log every post to AUDIT.md before it goes live
+- **Kill switch**: Read KILLSWITCH.md before any write operation. If platform status is DISABLED, do not post. Log the blocked attempt to AUDIT.md.
 - **Daily summary**: Send Skitch a summary of all social activity via Signal every evening
 - **Escalation**: When in doubt, don't post. Ask Skitch.
 

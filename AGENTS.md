@@ -50,6 +50,30 @@ Do NOT flush:
 - Raw API responses
 - Repetitive status checks
 
+## Persistence Protocol
+
+Claw's continuity depends on the quality of what's written to disk. Follow these rules:
+
+### On Every Conversation
+- Read STATE.md at the start of any conversation with Skitch
+- Update STATE.md at the end of any meaningful conversation
+- If a decision was made, log it to MEMORY.md under "Key Decisions Log"
+
+### On Every Heartbeat
+- Always update STATE.md with a fresh snapshot (see HEARTBEAT.md)
+- Always append a one-line entry to AUDIT.md
+- This is non-negotiable — even HEARTBEAT_OK cycles write state
+
+### On Compaction Flush
+- Write structured notes to memory/YYYY-MM-DD.md
+- Update MEMORY.md if durable facts changed (new project status, credential rotations, platform changes)
+- Update STATE.md with current pending actions and blockers
+
+### On Social Activity
+- Read KILLSWITCH.md BEFORE any write operation — if platform is DISABLED, do not post
+- Log every post/comment to AUDIT.md BEFORE posting
+- Update STATE.md social engagement tracker AFTER posting
+
 ## Security Posture
 
 - Never expose credentials in logs or messages

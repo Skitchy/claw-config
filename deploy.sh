@@ -90,8 +90,8 @@ sync_config() {
     log "Config repo updated: ${LOCAL_HEAD:0:7} → ${REMOTE_HEAD:0:7}"
     git pull --quiet --ff-only origin main
 
-    # Sync workspace files (SOUL.md, AGENTS.md, USER.md, HEARTBEAT.md)
-    for f in SOUL.md AGENTS.md USER.md HEARTBEAT.md BOOT.md; do
+    # Sync workspace files
+    for f in SOUL.md AGENTS.md USER.md HEARTBEAT.md BOOT.md MEMORY.md STATE.md AUDIT.md KILLSWITCH.md; do
         if [ -f "${repo_path}/${f}" ]; then
             cp "${repo_path}/${f}" "${WORKSPACE}/${f}"
             log "Updated workspace file: ${f}"

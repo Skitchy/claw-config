@@ -1,33 +1,44 @@
 # HEARTBEAT.md
 
-CONTRACT: Reply HEARTBEAT_OK if nothing needs attention. Only escalate if something requires action.
+CONTRACT: On every heartbeat, update STATE.md with current status BEFORE deciding whether to escalate.
 
-## Quick Scan
+## Step 1: State Snapshot (ALWAYS do this)
+
+Read STATE.md. Update these sections with fresh data:
+- **Recent Activity Summary** — last 24h only, max 5 items. Remove anything older.
+- **Social Engagement Tracker** — posts/comments today, reset counts if new day.
+- **System Health** — token status, connection status, last heartbeat timestamp.
+- **Pending Actions** — anything still waiting on Skitch or external action.
+- **Active Blockers** — anything stuck and why.
+
+Write the updated STATE.md with current UTC timestamp in the header.
+
+## Step 2: Audit Log Entry
+
+Append a one-line entry to AUDIT.md:
+`[YYYY-MM-DD HH:MM UTC] HEARTBEAT — [brief status: e.g. "all clear" or "bluesky token expiring in 1h"]`
+
+This creates a verifiable trail that heartbeats are running.
+
+## Step 3: Quick Scan
 
 - Any urgent messages or mentions across social platforms?
-- Any new GitHub issues or PRs on monitored repos?
-- Any kill switches triggered? (Check platform-specific config flags)
+- Any new GitHub issues or PRs on monitored repos (Fortress-System, RedClaw, BlueClaw)?
+- Any kill switches triggered? (Read KILLSWITCH.md)
+- Any token expirations within the next 2 hours?
+- Google Analytics — traffic spikes on Shop.Solar or CryptoSkitch.com?
 
-## Periodic Checks (run on each heartbeat)
+## Step 4: Decision
 
-- Reddit inbox (/u/Skitchy) — new messages or comment replies?
-- Bluesky notifications — mentions or replies?
-- GitHub activity — Fortress-System, RedClaw, BlueClaw repos
-- Google Analytics — any traffic spikes or anomalies on Shop.Solar or CryptoSkitch.com?
+- If something needs Skitch's attention — Draft a concise summary, queue it for next interaction via Signal. Include: what happened, recommended action, confidence level, whether it needs approval.
+- If nothing needs attention — Reply HEARTBEAT_OK
 
-## If Something Needs Attention
+## Step 5: Memory Hygiene (rotate through these, one per day)
 
-Draft a concise summary and queue it for the next Skitch interaction via Signal. Include:
-- What happened
-- What action is recommended
-- Confidence level (high/medium/low)
-- Whether it requires Skitch's approval
-
-## Daily Summary (once per day, evening)
-
-Compile and send to Skitch via Signal:
-- Posts made today (with links)
-- Drafts awaiting approval
-- Notable interactions or engagement
-- Any flagged items
-- Platform health status
+Pick ONE of these each day, cycling through:
+- **Monday**: Review MEMORY.md for outdated info and clean it up
+- **Tuesday**: Check if any pending actions in STATE.md have resolved
+- **Wednesday**: Archive completed items from STATE.md
+- **Thursday**: Check KILLSWITCH.md matches actual platform availability
+- **Friday**: Review AUDIT.md — flag any anomalies in posting patterns
+- **Weekend**: Skip hygiene, just do Steps 1-4

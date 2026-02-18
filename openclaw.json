@@ -31,8 +31,11 @@
         "openrouter/moonshotai/kimi-k2.5": {
           "alias": "kimi"
         },
-        "openrouter/google/gemini-2.5-flash-lite": {
+        "openrouter/google/gemini-2.5-flash": {
           "alias": "gemini-flash"
+        },
+        "openrouter/google/gemini-2.5-flash-lite": {
+          "alias": "gemini-flash-lite"
         }
       },
 
@@ -44,7 +47,8 @@
       "memorySearch": {
         "sources": ["memory", "sessions"],
         "provider": "openai",
-        "model": "text-embedding-3-small"
+        "model": "text-embedding-3-small",
+        "extraPaths": ["STATE.md", "AUDIT.md", "KILLSWITCH.md"]
       },
 
       "contextPruning": {
@@ -58,16 +62,15 @@
         "memoryFlush": {
           "enabled": true,
           "softThresholdTokens": 40000,
-          "prompt": "Extract key decisions, state changes, lessons, and blockers to memory/YYYY-MM-DD.md. Format: ## [HH:MM] Topic. Skip routine exchanges. Write NO_FLUSH if nothing important happened.",
-          "systemPrompt": "Compacting session context. Extract only what is worth remembering. Focus on decisions, not chitchat."
+          "prompt": "Write session notes to memory/YYYY-MM-DD.md using this format:\n\n## [HH:MM] Session Summary\n\n### Decisions Made\n- [decision] — [reasoning]\n\n### State Changes\n- [what changed] — [old > new]\n\n### Lessons & Insights\n- [insight]\n\n### Open Items\n- [what's pending and why]\n\nAlso update MEMORY.md if any durable facts changed (new project status, credential rotations, platform changes). Also update STATE.md pending actions and blockers. Skip routine exchanges. Write NO_FLUSH if nothing important happened.",
+          "systemPrompt": "Compacting session context. Extract only what is worth remembering. Write structured notes that future-you can quickly scan. Update STATE.md and MEMORY.md if durable state changed."
         }
       },
 
-      // Heartbeat: use the cheapest model available
-      // Heartbeats are just "anything need attention?" checks
+      // Heartbeat: Gemini Flash (not Lite) — needs to reliably read/write STATE.md and AUDIT.md
       "heartbeat": {
         "every": "30m",
-        "model": "openrouter/google/gemini-2.5-flash-lite"
+        "model": "openrouter/google/gemini-2.5-flash"
       },
 
       "maxConcurrent": 4,
